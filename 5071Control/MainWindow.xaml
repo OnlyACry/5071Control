@@ -5,8 +5,50 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:_5071Control"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        Title="E5071C 控制程序" Height="550" Width="900">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
 
+        <!-- IP 输入和按钮行 -->
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,10">
+            <TextBlock Text="IP地址: " VerticalAlignment="Center" Margin="0,0,5,0" FontWeight="Bold"/>
+            <TextBox Text="{Binding IpAddress, UpdateSourceTrigger=PropertyChanged}" 
+                     Width="150" VerticalAlignment="Center" Margin="0,0,10,0" Padding="5"/>
+            <Button Content="获取最大值" 
+                    Command="{Binding GetMaxValueCommand}" 
+                    Width="100" Padding="5" FontWeight="Bold"/>
+        </StackPanel>
+
+        <!-- 状态显示行 -->
+        <Border Grid.Row="1" Background="#F0F0F0" BorderBrush="#CCCCCC" BorderThickness="1" Padding="10" Margin="0,0,0,10" CornerRadius="4">
+            <TextBlock Text="{Binding StatusMessage}" 
+                       TextWrapping="Wrap" 
+                       FontSize="12"
+                       Foreground="#333333"
+                       MinHeight="30"
+                       VerticalAlignment="Center"/>
+        </Border>
+
+        <!-- 数据统计行 -->
+        <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,0,0,10">
+            <TextBlock Text="{Binding Measurements.Count, StringFormat='已获取数据: {0} 条'}" 
+                       Foreground="#666666" FontSize="11"/>
+        </StackPanel>
+
+        <!-- 数据网格 -->
+        <DataGrid Grid.Row="3" ItemsSource="{Binding Measurements}" 
+                  AutoGenerateColumns="False" CanUserAddRows="False"
+                  AlternatingRowBackground="#F5F5F5">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="时间 (Time)" Binding="{Binding Time}" Width="200"/>
+                <DataGridTextColumn Header="最大值 (Max Value)" 
+                                    Binding="{Binding MaxValue, StringFormat={}{0:F4}}" Width="*"/>
+            </DataGrid.Columns>
+        </DataGrid>
     </Grid>
 </Window>
